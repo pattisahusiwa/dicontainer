@@ -58,7 +58,8 @@ final class ConstructParamsTest extends AbstractConfigTest
         $this->expectExceptionMessage(
             sprintf(
                 'Argument 1 passed to %s::__construct() must be of the type %s or null, array given',
-                ScalarAllowsNull::class, $type
+                ScalarAllowsNull::class,
+                $type
             )
         );
 
