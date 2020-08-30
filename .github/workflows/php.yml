@@ -98,11 +98,11 @@ jobs:
       max-parallel: 2
       fail-fast: false
       matrix:
-        operating-system: [ubuntu-latest]
+        operating-system: [ubuntu-latest, windows-latest, macos-latest]
         php-versions: ['7.1', '7.2', '7.3', '7.4']
 
     runs-on: ${{ matrix.operating-system }}
-    continue-on-error: true
+    # continue-on-error: true
     steps:
       - uses: actions/checkout@v2
 
@@ -171,7 +171,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-req=php
+        run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
 
       - name: phpunit
         run: vendor/bin/phpunit --no-coverage
