@@ -60,7 +60,8 @@ final class DiContainer implements ContainerInterface
         throw new ContainerException('Rule getFrom is not callable');
     }
 
-    private function getInstance(DiRule $rule) : object
+    /** @return object */
+    private function getInstance(DiRule $rule)
     {
         if (isset($this->instances[$rule->key()])) {
             return $this->instances[$rule->key()];
@@ -87,7 +88,8 @@ final class DiContainer implements ContainerInterface
         return $object;
     }
 
-    private function createObject(DiRule $rule) : Object
+    /** @return object */
+    private function createObject(DiRule $rule)
     {
         $ref = new ReflectionClass($rule->classname());
         if ($ref->isAbstract()) {
@@ -101,8 +103,10 @@ final class DiContainer implements ContainerInterface
     /**
      * @param ReflectionClass<Object> $ref
      * @param array<mixed> $params
+     *
+     * @return object
      */
-    private function getObject(ReflectionClass $ref, array $params) : object
+    private function getObject(ReflectionClass $ref, array $params)
     {
         try {
             return $ref->newInstanceArgs($params);

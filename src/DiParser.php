@@ -148,8 +148,12 @@ final class DiParser
         }
     }
 
-    /** @param array<mixed> $values */
-    private function getObjectValue(string $className, array &$values) : ?object
+    /**
+     * @param array<mixed> $values
+     *
+     * @return object|null
+     */
+    private function getObjectValue(string $className, array &$values)
     {
         if (!isset($values[0])) {
             return null;
