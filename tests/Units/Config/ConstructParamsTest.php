@@ -49,11 +49,16 @@ final class ConstructParamsTest extends AbstractConfigTest
 
     public function testPassInvalidScalarType()
     {
+        $type = 'bool';
+        if (PHP_VERSION_ID >= 70100 && PHP_VERSION_ID < 70300) {
+            $type = 'boolean';
+        }
+
         $this->expectException(ContainerException::class);
         $this->expectExceptionMessage(
             sprintf(
-                'Argument 1 passed to %s::__construct() must be of the type bool or null, array given',
-                ScalarAllowsNull::class
+                'Argument 1 passed to %s::__construct() must be of the type %s or null, array given',
+                ScalarAllowsNull::class, $type
             )
         );
 
