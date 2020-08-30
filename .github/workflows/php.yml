@@ -38,8 +38,11 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress --no-suggest
 
+      - name: Show installed coding standards
+        run: vendor/bin/phpcs -i
+
       - name: coding standard
-        run: phpcs
+        run: vendor/bin/phpcs
 
       - name: phpstan
         run: phpstan analyse
