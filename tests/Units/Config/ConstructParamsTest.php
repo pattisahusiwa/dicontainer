@@ -54,18 +54,21 @@ final class ConstructParamsTest extends AbstractConfigTest
             $type = 'boolean or null';
         }
 
+        $msg = sprintf(
+            'Argument 1 passed to %s::__construct() must be of the type %s, array given',
+            ScalarAllowsNull::class,
+            $type
+        );
+
         if (PHP_MAJOR_VERSION >= 8) {
-            $type = '?bool';
+            $msg = sprintf(
+                '%s::__construct(): Argument #1 ($bool) must be of type ?bool, array given',
+                ScalarAllowsNull::class
+            );
         }
 
         $this->expectException(ContainerException::class);
-        $this->expectExceptionMessage(
-            sprintf(
-                'Argument 1 passed to %s::__construct() must be of the type %s, array given',
-                ScalarAllowsNull::class,
-                $type
-            )
-        );
+        $this->expectExceptionMessage($msg);
 
         $rules['constructParams'] = [[]];
 
