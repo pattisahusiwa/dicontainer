@@ -19,6 +19,9 @@ jobs:
           tools: phpcs, phpstan
           coverage: none
 
+      - name: Show composer version
+        run: composer -V
+
       - name: Validate composer.json and composer.lock
         run: composer validate
 
@@ -56,6 +59,9 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           coverage: xdebug
+
+      - name: Show composer version
+        run: composer -V
 
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -101,6 +107,9 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           coverage: none
 
+      - name: Show composer version
+        run: composer -V
+
       - name: Validate composer.json and composer.lock
         run: composer validate
 
@@ -137,6 +146,9 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           coverage: none
+
+      - name: Show composer version
+        run: composer -V
 
       - name: Validate composer.json and composer.lock
         run: composer validate
