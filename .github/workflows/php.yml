@@ -96,12 +96,13 @@ jobs:
   test:
     strategy:
       max-parallel: 2
+      fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.0', '7.1', '7.2', '7.3', '7.4']
 
     runs-on: ${{ matrix.operating-system }}
-
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v2
 
@@ -136,11 +137,13 @@ jobs:
 
   test-php8:
     strategy:
+      fail-fast: false
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macos-latest]
         php-versions: ['8.0']
 
     runs-on: ${{ matrix.operating-system }}
+    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v2
