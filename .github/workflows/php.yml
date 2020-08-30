@@ -95,6 +95,7 @@ jobs:
 
   test:
     strategy:
+      max-parallel: 2
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.0', '7.1', '7.2', '7.3', '7.4']
