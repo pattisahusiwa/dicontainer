@@ -22,19 +22,14 @@ final class CallbackHelper
         try {
             $ref = $this->getReflection($callback);
 
-            if ($ref === null && is_callable($callback)) {
-                return $callback;
-            }
-
             if ($ref === null) {
-                throw new ContainerException('getFrom rule is not a callable');
+                return $callback;
             }
 
             if ($ref->isStatic() === false) {
                 $classname = $ref->getDeclaringClass()->getName();
                 $methodName = $ref->getName();
                 $obj = $this->dic->get($classname);
-                /** @var callable $callback */
                 $callback = [$obj, $methodName];
             }
 
