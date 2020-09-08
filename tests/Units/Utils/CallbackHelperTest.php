@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Xynha\Container\CallbackHelper;
+use Xynha\Container\ContainerException;
 use Xynha\Container\DiContainer;
 use Xynha\Container\DiRuleList;
 
@@ -19,10 +20,17 @@ final class CallbackHelperTest extends TestCase
         $this->callback = new CallbackHelper($dic);
     }
 
+    public function testNotCallable()
+    {
+        $this->expectException(ContainerException::class);
+        $this->expectExceptionMessage('getFrom rule is not a callable');
+        $this->callback->toCallback('_NotExist_');
+    }
+
     public function testFunctionCallback()
     {
         $callback = 'fnCallback';
-        $norm = $this->callback->normalize($callback);
+        $norm = $this->callback->toCallback($callback);
 
         $this->assertSame($callback, $norm);
 
@@ -35,7 +43,7 @@ final class CallbackHelperTest extends TestCase
     public function testStaticClassString()
     {
         $callback = 'StaticClass::callback';
-        $norm = $this->callback->normalize($callback);
+        $norm = $this->callback->toCallback($callback);
 
         $this->assertSame($callback, $norm);
 
@@ -47,7 +55,7 @@ final class CallbackHelperTest extends TestCase
     public function testStaticClassArray()
     {
         $callback = ['StaticClass', 'callback'];
-        $norm = $this->callback->normalize($callback);
+        $norm = $this->callback->toCallback($callback);
 
         $this->assertSame($callback, $norm);
 
@@ -59,7 +67,7 @@ final class CallbackHelperTest extends TestCase
     public function testExtendStaticClass()
     {
         $callback = ['ExtendStaticClass', 'callback'];
-        $norm = $this->callback->normalize($callback);
+        $norm = $this->callback->toCallback($callback);
 
         $this->assertSame($callback, $norm);
 
@@ -71,7 +79,7 @@ final class CallbackHelperTest extends TestCase
     public function testExtendStaticClassParent()
     {
         $callback = ['ExtendStaticClass', 'parent::callback'];
-        $norm = $this->callback->normalize($callback);
+        $norm = $this->callback->toCallback($callback);
 
         $this->assertSame($callback, $norm);
 
@@ -84,7 +92,7 @@ final class CallbackHelperTest extends TestCase
     {
         $obj = new InvokeClass();
         $callback = [$obj, 'callback'];
-        $norm = $this->callback->normalize($callback);
+        $norm = $this->callback->toCallback($callback);
 
         $this->assertSame($callback, $norm);
 
@@ -97,7 +105,7 @@ final class CallbackHelperTest extends TestCase
     {
         $obj = new InvokeClass();
         $callback = $obj;
-        $norm = $this->callback->normalize($callback);
+        $norm = $this->callback->toCallback($callback);
 
         $this->assertSame($callback, $norm);
 
@@ -113,7 +121,7 @@ final class CallbackHelperTest extends TestCase
         };
 
         $callback = $closure;
-        $norm = $this->callback->normalize($callback);
+        $norm = $this->callback->toCallback($callback);
 
         $this->assertSame($callback, $norm);
 
@@ -126,7 +134,7 @@ final class CallbackHelperTest extends TestCase
     {
         $callback = ['InvokeClass', 'callback'];
         /** @var array{object,string} $norm */
-        $norm = $this->callback->normalize($callback);
+        $norm = $this->callback->toCallback($callback);
 
         $this->assertNotSame($callback, $norm);
         $this->assertInstanceOf('InvokeClass', $norm[0]);

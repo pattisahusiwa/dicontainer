@@ -56,11 +56,7 @@ final class DiContainer implements ContainerInterface
         $callback = array_shift($getFrom);
         $args = array_shift($getFrom);
 
-        if (!is_callable($callback)) {
-            throw new ContainerException('getFrom rule is not callable');
-        }
-
-        $callback = $this->callback->normalize($callback);
+        $callback = $this->callback->toCallback($callback);
         return call_user_func_array($callback, (array)$args);
     }
 

@@ -5,7 +5,6 @@ namespace Xynha\Container;
 use Psr\Container\ContainerInterface;
 use ReflectionException;
 use ReflectionMethod;
-use UnexpectedValueException;
 
 final class CallbackHelper
 {
@@ -17,13 +16,18 @@ final class CallbackHelper
         $this->dic = $dic;
     }
 
-    public function normalize(callable $callback) : callable
+    /** @param mixed $callback */
+    public function toCallback($callback) : callable
     {
         try {
             $ref = $this->getReflection($callback);
 
-            if ($ref === null) {
+            if ($ref === null && is_callable($callback)) {
                 return $callback;
+            }
+
+            if ($ref === null) {
+                throw new ContainerException('getFrom rule is not a callable');
             }
 
             if ($ref->isStatic() === false) {
@@ -36,11 +40,17 @@ final class CallbackHelper
 
             return $callback;
         } catch (ReflectionException $exc) {
+        }
+
+        if (is_callable($callback)) {
             return $callback;
         }
+
+        throw new ContainerException('getFrom rule is not a callable');
     }
 
-    private function getReflection(callable $callback) : ?ReflectionMethod
+    /** @param mixed $callback */
+    private function getReflection($callback) : ?ReflectionMethod
     {
         switch (true) {
             case is_string($callback):

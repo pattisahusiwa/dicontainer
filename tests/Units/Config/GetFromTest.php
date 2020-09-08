@@ -17,7 +17,7 @@ final class GetFromTest extends AbstractConfigTestCase
     public function testGetFromIsNotCallable()
     {
         $this->expectException(ContainerException::class);
-        $this->expectExceptionMessage('getFrom rule is not callable');
+        $this->expectExceptionMessage('getFrom rule is not a callable');
 
         $rule['getFrom'] = ['callback'];
 
